@@ -1,16 +1,19 @@
 # 📚 Bibliotheksverwaltung
 
-Eine Desktopanwendung zur Verwaltung einer kleinen Bibliothek. Entwickelt mit **Lazarus (Free Pascal)** und einer **Firebird-Datenbank**.
+Eine objektorientierte Desktopanwendung zur Verwaltung einer kleinen Bibliothek. Entwickelt mit **Lazarus (Free Pascal)** und einer **Firebird-Datenbank**.
 
-Die Anwendung ermöglicht die Verwaltung von Büchern und Mitgliedern sowie die Buchung von Ausleihen und Rückgaben.
+Die Anwendung ermöglicht die Verwaltung von Büchern und Mitgliedern sowie die Organisation von Ausleihen und Rückgaben.
+
+---
 
 ## ✨ Funktionen
 
 ### 📖 Bücherverwaltung
 - Bücher hinzufügen, bearbeiten und löschen
+- ISBN als eindeutiger Schlüssel
 - Anzeige des Buchstatus: verfügbar oder verliehen
 - Sicherheitsabfrage vor dem Löschen
-- ISBN als eindeutiger Schlüssel
+- Erscheinungsjahr validieren
 
 ### 👥 Mitgliederverwaltung
 - Mitglieder hinzufügen und bearbeiten
@@ -21,170 +24,130 @@ Die Anwendung ermöglicht die Verwaltung von Büchern und Mitgliedern sowie die 
 ### 🔄 Ausleihverwaltung
 - Bücher an Mitglieder ausleihen
 - Rückgabe von Büchern buchen
-- Anzeige offener Ausleihen
+- Anzeige aller offenen Ausleihen
 - Filter für offene Ausleihen
-- Überfällige Ausleihen werden farblich hervorgehoben
+- Überfällige Ausleihen farblich hervorheben
+- Automatische Berechnung der Rückgabefrist
 
 ### 📊 Weitere Funktionen
 - Statusleiste mit Anzahl der Bücher, Mitglieder und Ausleihen
 - Verständliche Erfolgsmeldungen und Fehlermeldungen
-- Automatische Berechnung der Rückgabefrist
-- Speicherung aller Daten in einer Firebird-Datenbank
+- Daten bleiben nach einem Neustart erhalten
+- Datenbankregeln werden zusätzlich durch Trigger abgesichert
+
+---
 
 ## 🛠️ Verwendete Technologien
 
-- **Programmiersprache:** Free Pascal
-- **Entwicklungsumgebung:** Lazarus IDE
-- **Datenbank:** Firebird 3.0 oder höher
-- **Datenbankverwaltung:** DBeaver (optional)
-- **Datenbankkomponenten:** SQLDB / IBConnection
+| Technologie | Verwendung |
+|---|---|
+| Free Pascal | Programmiersprache |
+| Lazarus IDE | Entwicklungsumgebung |
+| Firebird 3.0+ | Relationale Datenbank |
+| SQL / SQLDB | Datenbankzugriff |
+| IBConnection | Verbindung zur Firebird-Datenbank |
+| DBeaver | Datenbankverwaltung und SQL-Ausführung |
+
+---
 
 ## 🏗️ Projektarchitektur
 
-Das Projekt ist objektorientiert aufgebaut und trennt Datenmodelle, Geschäftslogik und Benutzeroberfläche.
+Das Projekt wurde objektorientiert entwickelt. Die Anwendung trennt Datenklassen, Geschäftslogik und Benutzeroberfläche.
 
-| Datei | Aufgabe |
-|---|---|
-| `uBuch.pas` | Datenklasse für Bücher |
-| `uMitglied.pas` | Datenklasse für Mitglieder |
-| `uAusleihe.pas` | Datenklasse für Ausleihen |
-| `uBibliothekService.pas` | Geschäftslogik und Datenbankzugriff |
-| `Unit1.pas` | Hauptformular und Benutzeroberfläche |
+| Datei | Klasse | Aufgabe |
+|---|---|---|
+| `uBuch.pas` | `TBuch` | Datenklasse für Bücher |
+| `uMitglied.pas` | `TMitglied` | Datenklasse für Mitglieder |
+| `uAusleihe.pas` | `TAusleihe` | Datenklasse für Ausleihen |
+| `uBibliothekService.pas` | `TBibliothekService` | Geschäftslogik und Datenbankzugriff |
+| `Unit1.pas` | `TFormMain` | Hauptformular und Benutzeroberfläche |
 
-Die Benutzeroberfläche kommuniziert mit dem Service. Der Service verwaltet die Geschäftsregeln und den Datenbankzugriff.
+### Architekturprinzip
+
+Die Anwendung ist in drei Bereiche aufgeteilt:
+
+1. **Benutzeroberfläche:** Nimmt Benutzereingaben entgegen und zeigt Daten an.
+2. **Service-Schicht:** Enthält die Geschäftsregeln und den gesamten Datenbankzugriff.
+3. **Datenklassen:** Bilden Bücher, Mitglieder und Ausleihen als Objekte ab.
+
+Die Benutzeroberfläche enthält kein SQL. Sie kommuniziert mit dem Service, der wiederum die Datenklassen verwendet.
+
+---
 
 ## 🗄️ Datenbankstruktur
 
 Die Anwendung verwendet drei Haupttabellen:
 
-- `BUCH` – speichert die Buchinformationen.
-- `MITGLIED` – speichert die Mitgliederdaten.
-- `AUSLEIHE` – speichert Ausleihen und Rückgaben.
+| Tabelle | Beschreibung |
+|---|---|
+| `BUCH` | Speichert ISBN, Titel, Autor und Erscheinungsjahr |
+| `MITGLIED` | Speichert ID, Name, E-Mail und Aktiv-Status |
+| `AUSLEIHE` | Speichert Ausleihen und Rückgaben |
 
-Zusätzlich werden zwei Datenbank-Views verwendet:
+### Datenbankbeziehungen
 
-- `V_BUCH_STATUS` – zeigt an, ob ein Buch verfügbar oder verliehen ist.
-- `V_VERLIEHEN` – zeigt aktuell verliehene Bücher und überfällige Ausleihen.
+- Ein Buch kann mehrere Ausleihen im Laufe der Zeit haben.
+- Ein Mitglied kann mehrere Ausleihen im Laufe der Zeit haben.
+- Die Tabelle `AUSLEIHE` verbindet Bücher und Mitglieder über Fremdschlüssel.
+
+### Views
+
+- `V_BUCH_STATUS`: Zeigt Bücher mit ihrem aktuellen Status (VERFÜGBAR oder VERLIEHEN).
+- `V_VERLIEHEN`: Zeigt aktuell ausgeliehene Bücher, Mitglieder und überfällige Tage.
+
+### Trigger und Datenbankregeln
+
+Folgende Trigger sichern die Geschäftsregeln:
+
+- `AUSLEIHE_BI`: Prüft neue Ausleihen und setzt die Leihfrist.
+- `AUSLEIHE_BU`: Schützt bestehende Ausleihen vor unerlaubten Änderungen.
+- `AUSLEIHE_BD`: Verhindert das Löschen von Ausleihen.
+
+Zusätzlich werden Datenbank-Exceptions für wichtige Fehlerfälle verwendet.
 
 ### Geschäftsregeln
 
-- Ein Buch kann nur einmal gleichzeitig ausgeliehen werden.
+- Ein Buch darf nur einmal gleichzeitig ausgeliehen werden.
 - Ein Mitglied darf höchstens drei Bücher gleichzeitig ausleihen.
-- Die reguläre Leihfrist beträgt 28 Tage.
+- Die Leihfrist beträgt 28 Tage.
 - Inaktive Mitglieder dürfen keine Bücher ausleihen.
 - Ausleihen werden nicht gelöscht, sondern durch eine Rückgabe abgeschlossen.
-- Datenbank-Trigger sichern wichtige Regeln zusätzlich ab.
+- Bücher mit vorhandenen Ausleihen können nicht gelöscht werden.
+- Mitglieder mit offenen Ausleihen können nicht deaktiviert werden.
+- ISBN und E-Mail-Adresse müssen eindeutig sein.
 
-- ###SQL script
-- -- Tabellen
-CREATE TABLE BUCH (
-  ISBN             VARCHAR(20)  NOT NULL PRIMARY KEY,
-  TITEL            VARCHAR(150) NOT NULL,
-  AUTOR            VARCHAR(100) NOT NULL,
-  ERSCHEINUNGSJAHR SMALLINT,
-  CONSTRAINT CHK_BUCH_JAHR CHECK (ERSCHEINUNGSJAHR BETWEEN 1400 AND 2100)
-);
+Die wichtigen Regeln werden sowohl im Programm als auch in der Datenbank geprüft.
 
-CREATE TABLE MITGLIED (
-  ID    INTEGER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
-  NAME  VARCHAR(100) NOT NULL,
-  EMAIL VARCHAR(100),
-  AKTIV BOOLEAN DEFAULT TRUE NOT NULL,
-  CONSTRAINT UQ_MITGLIED_EMAIL UNIQUE (EMAIL)
-);
+---
 
-CREATE TABLE AUSLEIHE (
-  ID             INTEGER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
-  ISBN           VARCHAR(20) NOT NULL,
-  MITGLIED_ID    INTEGER     NOT NULL,
-  AUSGELIEHEN_AM DATE DEFAULT CURRENT_DATE NOT NULL,
-  FAELLIG_AM     DATE NOT NULL,
-  ZURUECK_AM     DATE,
-  CONSTRAINT FK_AUSL_BUCH     FOREIGN KEY (ISBN)        REFERENCES BUCH (ISBN),
-  CONSTRAINT FK_AUSL_MITGLIED FOREIGN KEY (MITGLIED_ID) REFERENCES MITGLIED (ID),
-  CONSTRAINT CHK_AUSL_FAELLIG CHECK (FAELLIG_AM >= AUSGELIEHEN_AM),
-  CONSTRAINT CHK_AUSL_ZURUECK CHECK (ZURUECK_AM IS NULL OR ZURUECK_AM >= AUSGELIEHEN_AM)
-);
+## 📂 Repository-Struktur
 
-CREATE INDEX IDX_AUSL_ISBN     ON AUSLEIHE (ISBN);
-CREATE INDEX IDX_AUSL_MITGLIED ON AUSLEIHE (MITGLIED_ID);
+```text
+Bibliotheksverwaltung/
+│
+├── README.md
+├── .gitignore
+│
+├── database/
+│   └── bibliotheksverwaltung.sql
+│
+├── backup/
+│
+├── lib/
+│   └── x86_64-linux/
+│
+├── Unit1.pas
+├── Unit1.lfm
+├── uBuch.pas
+├── uMitglied.pas
+├── uAusleihe.pas
+├── uBibliothekService.pas
+└── Bibliotheksverwaltung.lpi
+```
 
--- Regeln in der Datenbank
-CREATE EXCEPTION E_BUCH_VERLIEHEN
-  'Das Buch ist bereits verliehen.';
-CREATE EXCEPTION E_AUSLEIHE_LIMIT
-  'Ein Mitglied darf hoechstens 3 Buecher gleichzeitig ausleihen.';
-CREATE EXCEPTION E_MITGLIED_INAKTIV
-  'Ein inaktives Mitglied darf nichts ausleihen.';
-CREATE EXCEPTION E_AUSLEIHE_GESCHUETZT
-  'Ausleihen duerfen nicht geaendert oder geloescht werden. Erlaubt ist nur die Rueckgabe.';
+*Hinweis: Die Struktur zeigt die vorgesehene Organisation. Die Dateien müssen entsprechend im Repository vorhanden sein.*
 
-SET TERM ^ ;
-
-CREATE TRIGGER AUSLEIHE_BI FOR AUSLEIHE
-BEFORE INSERT AS
-  DECLARE VARIABLE V_OFFEN INTEGER;
-  DECLARE VARIABLE V_AKTIV BOOLEAN;
-BEGIN
-  IF (NEW.AUSGELIEHEN_AM IS NULL) THEN
-    NEW.AUSGELIEHEN_AM = CURRENT_DATE;
-
-  IF (NEW.FAELLIG_AM IS NULL) THEN
-    NEW.FAELLIG_AM = DATEADD(28 DAY TO NEW.AUSGELIEHEN_AM);
-
-  SELECT AKTIV FROM MITGLIED WHERE ID = NEW.MITGLIED_ID INTO :V_AKTIV;
-  IF (NOT V_AKTIV) THEN
-    EXCEPTION E_MITGLIED_INAKTIV;
-
-  IF (EXISTS (SELECT 1 FROM AUSLEIHE
-              WHERE ISBN = NEW.ISBN AND ZURUECK_AM IS NULL)) THEN
-    EXCEPTION E_BUCH_VERLIEHEN;
-
-  SELECT COUNT(*) FROM AUSLEIHE
-    WHERE MITGLIED_ID = NEW.MITGLIED_ID AND ZURUECK_AM IS NULL
-    INTO :V_OFFEN;
-  IF (V_OFFEN >= 3) THEN
-    EXCEPTION E_AUSLEIHE_LIMIT;
-END^
-
-CREATE TRIGGER AUSLEIHE_BU FOR AUSLEIHE
-BEFORE UPDATE AS
-BEGIN
-  IF (OLD.ZURUECK_AM IS NOT NULL
-      OR NEW.ZURUECK_AM IS NULL
-      OR NEW.ISBN <> OLD.ISBN
-      OR NEW.MITGLIED_ID <> OLD.MITGLIED_ID
-      OR NEW.AUSGELIEHEN_AM <> OLD.AUSGELIEHEN_AM
-      OR NEW.FAELLIG_AM <> OLD.FAELLIG_AM) THEN
-    EXCEPTION E_AUSLEIHE_GESCHUETZT;
-END^
-
-CREATE TRIGGER AUSLEIHE_BD FOR AUSLEIHE
-BEFORE DELETE AS
-BEGIN
-  EXCEPTION E_AUSLEIHE_GESCHUETZT;
-END^
-
-SET TERM ; ^
-
--- Views
-CREATE VIEW V_BUCH_STATUS AS
-SELECT B.ISBN, B.TITEL, B.AUTOR, B.ERSCHEINUNGSJAHR,
-       CASE WHEN EXISTS (SELECT 1 FROM AUSLEIHE A
-                         WHERE A.ISBN = B.ISBN AND A.ZURUECK_AM IS NULL)
-            THEN 'VERLIEHEN' ELSE 'VERFUEGBAR' END AS STATUS
-FROM BUCH B;
-
-CREATE VIEW V_VERLIEHEN AS
-SELECT A.ID AS AUSLEIHE_ID, B.ISBN, B.TITEL, M.NAME AS MITGLIED,
-       A.AUSGELIEHEN_AM, A.FAELLIG_AM,
-       CASE WHEN A.FAELLIG_AM < CURRENT_DATE
-            THEN DATEDIFF(DAY, A.FAELLIG_AM, CURRENT_DATE) ELSE 0 END AS TAGE_UEBERFAELLIG
-FROM AUSLEIHE A
-JOIN BUCH B     ON B.ISBN = A.ISBN
-JOIN MITGLIED M ON M.ID = A.MITGLIED_ID
-WHERE A.ZURUECK_AM IS NULL; 
-- 
+---
 
 ## ⚙️ Installation und Start
 
@@ -195,30 +158,81 @@ WHERE A.ZURUECK_AM IS NULL;
 - Passende Firebird-Clientbibliothek
 - Optional: DBeaver
 
-### Einrichtung
+### 1. Repository herunterladen
 
-1. Firebird-Datenbank erstellen.
-2. Das SQL-Skript aus der Projektdokumentation in DBeaver ausführen.
-3. Das Projekt in Lazarus öffnen.
-4. Die Datenbankverbindung in `IBConnection1` konfigurieren.
-5. Zugangsdaten und Serverinformationen eintragen.
-6. Projekt neu kompilieren und starten.
+```bash
+git clone https://github.com/Anasalmadani/Bibliotheksverwaltung.git
+```
 
-**Wichtig:** Zugangsdaten und Passwörter dürfen nicht in ein öffentliches GitHub-Repository hochgeladen werden. Vor dem Veröffentlichen müssen vertrauliche Verbindungsdaten aus der Projektkonfiguration entfernt werden.
+### 2. Datenbank erstellen
 
-## 🧪 Tests
+Das SQL-Skript befindet sich unter:
 
-Folgende Funktionen sollen getestet werden:
+`database/bibliotheksverwaltung.sql`
 
-- Bücher hinzufügen, bearbeiten und löschen
-- Doppelte ISBN verhindern
-- Mitglieder hinzufügen und deaktivieren
-- Doppelte E-Mail-Adressen verhindern
-- Ausleihlimit von drei Büchern prüfen
-- Doppelte gleichzeitige Ausleihe verhindern
-- Rückgabe eines Buches durchführen
-- Überfällige Ausleihen erkennen
-- Daten nach einem Neustart weiterhin anzeigen
+Das Skript enthält:
+
+- Erstellung der Tabellen
+- Erstellung der Indizes
+- Definition der Datenbank-Exceptions
+- Erstellung der Trigger
+- Erstellung der Views
+
+Das Skript kann mit DBeaver auf einer Firebird-Datenbank ausgeführt werden.
+
+### 3. Datenbankverbindung konfigurieren
+
+In Lazarus müssen die Verbindungsparameter von `IBConnection1` konfiguriert werden:
+
+- HostName
+- DatabaseName
+- UserName
+- Password
+- CharSet: UTF8
+- LoginPrompt: False
+
+Die konkreten Verbindungsdaten hängen von der verwendeten Firebird-Installation ab.
+
+### 4. Projekt starten
+
+1. Projektdatei in Lazarus öffnen.
+2. Datenbankverbindung konfigurieren.
+3. Projekt neu kompilieren.
+4. Anwendung starten.
+
+---
+
+## 🔐 Sicherheit
+
+- Keine echten Datenbankpasswörter in GitHub veröffentlichen.
+- Keine vertraulichen Serverinformationen hochladen.
+- Zugangsdaten sollten außerhalb des öffentlichen Repositorys gespeichert werden.
+
+---
+
+## 🧪 Testfälle
+
+Folgende Funktionen sind für die Überprüfung vorgesehen:
+
+| Nr. | Test | Erwartetes Ergebnis |
+|---|---|---|
+| 1 | Programm starten | Datenbankverbindung funktioniert |
+| 2 | Buch hinzufügen | Buch wird gespeichert |
+| 3 | Doppelte ISBN hinzufügen | Fehlermeldung |
+| 4 | Buch ohne Titel hinzufügen | Fehlermeldung |
+| 5 | Ungültiges Erscheinungsjahr | Eingabe wird abgelehnt |
+| 6 | Buch bearbeiten | Änderung wird gespeichert |
+| 7 | Doppelte E-Mail-Adresse | Fehlermeldung |
+| 8 | Buch ausleihen | Ausleihe wird gespeichert |
+| 9 | Bereits verliehenes Buch ausleihen | Ausleihe wird verhindert |
+| 10 | Viertes Buch ausleihen | Ausleihe wird verhindert |
+| 11 | Mitglied deaktivieren | Mitglied wird nicht mehr zur Ausleihe angeboten |
+| 12 | Mitglied mit offener Ausleihe deaktivieren | Vorgang wird abgelehnt |
+| 13 | Buch zurückgeben | Buch wird wieder verfügbar |
+| 14 | Buch mit Ausleihen löschen | Löschen wird verhindert |
+| 15 | Programm neu starten | Gespeicherte Daten bleiben erhalten |
+
+---
 
 ## 🚀 Mögliche Erweiterungen
 
@@ -227,7 +241,33 @@ Folgende Funktionen sollen getestet werden:
 - Mahnliste für überfällige Bücher
 - Statistiken zu den meist ausgeliehenen Büchern
 - CSV-Export
+- Benutzeranmeldung und unterschiedliche Benutzerrollen
 
-## 👨‍💻 Projektziel
+---
 
-Ziel dieses Projekts ist die Entwicklung einer objektorientierten Desktopanwendung mit Lazarus und Free Pascal. Dabei werden praktische Kenntnisse in der Softwareentwicklung, Datenbankanbindung, SQL, OOP und der Trennung von Geschäftslogik und Benutzeroberfläche angewendet.
+## 🎯 Projektziel
+
+Ziel dieses Projekts ist die Entwicklung einer objektorientierten Desktopanwendung mit Lazarus und Free Pascal.
+
+Dabei werden praktische Kenntnisse in folgenden Bereichen angewendet:
+
+- Objektorientierte Programmierung (OOP)
+- Klassen, Objekte und Methoden
+- Trennung von Geschäftslogik und Benutzeroberfläche
+- Relationale Datenbanken
+- SQL und Firebird
+- Datenbankverbindungen und Transaktionen
+- Fehlerbehandlung und Datenvalidierung
+
+---
+
+## 👨‍💻 Autor
+
+**Anas Almadani**
+
+GitHub: [@Anasalmadani](https://github.com/Anasalmadani)
+
+**Projekt:** Bibliotheksverwaltung  
+**Entwicklungsumgebung:** Lazarus / Free Pascal  
+**Datenbank:** Firebird
+
