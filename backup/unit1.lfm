@@ -1,0 +1,304 @@
+object FormMain: TFormMain
+  Left = 303
+  Height = 999
+  Top = 31
+  Width = 1067
+  Caption = 'Bibliotheksverwaltung'
+  ClientHeight = 999
+  ClientWidth = 1067
+  Position = poScreenCenter
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 21
+    Top = 978
+    Width = 1067
+    Panels = <    
+      item
+        Width = 50
+      end    
+      item
+        Width = 50
+      end    
+      item
+        Width = 50
+      end    
+      item
+        Width = 50
+      end    
+      item
+        Width = 50
+      end    
+      item
+        Width = 50
+      end>
+    SimplePanel = False
+  end
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 978
+    Top = 0
+    Width = 1067
+    ActivePage = TabBuecher
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 1
+    object TabBuecher: TTabSheet
+      Caption = 'Bücher'
+      ClientHeight = 947
+      ClientWidth = 1057
+      object GroupBox1: TGroupBox
+        Left = 0
+        Height = 329
+        Top = 0
+        Width = 1057
+        Align = alTop
+        Caption = 'GroupBoxBuch'
+        TabOrder = 0
+      end
+      object EditISBN: TEdit
+        Left = 29
+        Height = 39
+        Top = 153
+        Width = 203
+        AutoSize = False
+        TabOrder = 1
+        TextHint = 'ISBN'
+      end
+      object EditTitel: TEdit
+        Left = 29
+        Height = 39
+        Top = 208
+        Width = 203
+        AutoSize = False
+        TabOrder = 2
+        TextHint = 'Titel'
+      end
+      object EditAutor: TEdit
+        Left = 296
+        Height = 39
+        Top = 154
+        Width = 200
+        AutoSize = False
+        TabOrder = 3
+        TextHint = 'Autor'
+      end
+      object EditJahr: TEdit
+        Left = 296
+        Height = 39
+        Top = 208
+        Width = 200
+        AutoSize = False
+        TabOrder = 4
+        TextHint = 'ERSCHEINUNGSJAHR'
+      end
+      object ButtonBuchHinzufuegen: TButton
+        Left = 536
+        Height = 40
+        Top = 153
+        Width = 155
+        Caption = 'BuchHinzufuegen'
+        TabOrder = 5
+      end
+      object ButtonBuchSpeichern: TButton
+        Left = 536
+        Height = 40
+        Top = 208
+        Width = 155
+        Caption = 'BuchSpeichern'
+        TabOrder = 6
+      end
+      object ButtonBuchLoeschen: TButton
+        Left = 536
+        Height = 41
+        Top = 264
+        Width = 155
+        Caption = 'BuchLöschen'
+        TabOrder = 7
+      end
+      object GridBuecher: TStringGrid
+        Left = 0
+        Height = 314
+        Top = 344
+        Width = 1057
+        AutoFillColumns = True
+        TabOrder = 8
+        ColWidths = (
+          64
+          248
+          248
+          248
+          247
+        )
+      end
+    end
+    object TabMitglieder: TTabSheet
+      Caption = 'Mitglieder'
+      ClientHeight = 947
+      ClientWidth = 1057
+      object GroupBoxMitglied: TGroupBox
+        Left = 0
+        Height = 257
+        Top = 0
+        Width = 1057
+        Align = alTop
+        Caption = 'GroupBoxMitglied'
+        TabOrder = 0
+      end
+      object EditMitgliedName: TEdit
+        Left = 72
+        Height = 40
+        Top = 144
+        Width = 200
+        AutoSize = False
+        TabOrder = 1
+        TextHint = 'Mitglied Name'
+      end
+      object EditMitgliedEmail: TEdit
+        Left = 336
+        Height = 40
+        Top = 144
+        Width = 200
+        AutoSize = False
+        TabOrder = 2
+        TextHint = 'Mitglied Email'
+      end
+      object CheckBoxAktiv: TCheckBox
+        Left = 856
+        Height = 48
+        Top = 256
+        Width = 140
+        AutoSize = False
+        Caption = 'CheckBoxAktiv'
+        TabOrder = 3
+      end
+      object ButtonMitgliedHinzufuegen: TButton
+        Left = 600
+        Height = 34
+        Top = 152
+        Width = 152
+        Caption = 'MitgliedHinzufuegen'
+        TabOrder = 4
+      end
+      object ButtonMitgliedSpeichern: TButton
+        Left = 800
+        Height = 34
+        Top = 152
+        Width = 155
+        Caption = 'MitgliedSpeichern'
+        TabOrder = 5
+      end
+      object GridMitglieder: TStringGrid
+        Left = 0
+        Height = 222
+        Top = 312
+        Width = 1021
+        AutoFillColumns = True
+        TabOrder = 6
+        ColWidths = (
+          64
+          239
+          238
+          238
+          238
+        )
+      end
+    end
+    object TabAusleihen: TTabSheet
+      Caption = 'Ausleihen'
+      ClientHeight = 947
+      ClientWidth = 1057
+      object GroupBoxAusleihe: TGroupBox
+        Left = 0
+        Height = 304
+        Top = 0
+        Width = 1057
+        Align = alTop
+        Caption = 'Neue Ausleihe'
+        TabOrder = 0
+      end
+      object ComboMitglied: TComboBox
+        Left = 40
+        Height = 31
+        Top = 181
+        Width = 200
+        ItemHeight = 0
+        TabOrder = 1
+        TextHint = 'ComboMitglied'
+      end
+      object ComboBuch: TComboBox
+        Left = 312
+        Height = 31
+        Top = 181
+        Width = 200
+        ItemHeight = 0
+        TabOrder = 2
+        TextHint = 'ComboBuch'
+      end
+      object ButtonAusleihen: TButton
+        Left = 600
+        Height = 33
+        Top = 182
+        Width = 155
+        Caption = 'Ausleihen'
+        TabOrder = 3
+      end
+      object ButtonRueckgabe: TButton
+        Left = 768
+        Height = 34
+        Top = 182
+        Width = 155
+        Caption = 'Rueckgabe'
+        TabOrder = 4
+      end
+      object CheckBoxNurOffen: TCheckBox
+        Left = 848
+        Height = 37
+        Top = 312
+        Width = 151
+        AutoSize = False
+        Caption = 'Nur offene anzeigen'
+        TabOrder = 5
+      end
+      object GridAusleihen: TStringGrid
+        Left = -2
+        Height = 213
+        Top = 360
+        Width = 1024
+        AutoFillColumns = True
+        ColCount = 6
+        TabOrder = 6
+        ColWidths = (
+          64
+          192
+          191
+          191
+          191
+          191
+        )
+      end
+    end
+  end
+  object SQLTransaction1: TSQLTransaction
+    Active = False
+    Database = IBConnection1
+    Left = 768
+    Top = 72
+  end
+  object IBConnection1: TIBConnection
+    Connected = False
+    LoginPrompt = False
+    DatabaseName = '/database/devanas.fdb'
+    KeepConnection = False
+    Params.Strings = (
+      'Port=3050'
+    )
+    Password = 'slu01'
+    Transaction = SQLTransaction1
+    UserName = 'SYSDBA'
+    HostName = 'hydbdev1'
+    CheckTransactionParams = False
+    UseConnectionCharSetIfNone = False
+    Left = 600
+    Top = 72
+  end
+end
