@@ -160,9 +160,7 @@ Bibliotheksverwaltung/
 
 ### 1. Repository herunterladen
 
-```bash
-git clone https://github.com/Anasalmadani/Bibliotheksverwaltung.git
-```
+
 
 ### 2. Datenbank erstellen
 
@@ -200,39 +198,6 @@ Die konkreten Verbindungsdaten hängen von der verwendeten Firebird-Installation
 3. Projekt neu kompilieren.
 4. Anwendung starten.
 
----
-
-## 🔐 Sicherheit
-
-- Keine echten Datenbankpasswörter in GitHub veröffentlichen.
-- Keine vertraulichen Serverinformationen hochladen.
-- Zugangsdaten sollten außerhalb des öffentlichen Repositorys gespeichert werden.
-
----
-
-## 🧪 Testfälle
-
-Folgende Funktionen sind für die Überprüfung vorgesehen:
-
-| Nr. | Test | Erwartetes Ergebnis |
-|---|---|---|
-| 1 | Programm starten | Datenbankverbindung funktioniert |
-| 2 | Buch hinzufügen | Buch wird gespeichert |
-| 3 | Doppelte ISBN hinzufügen | Fehlermeldung |
-| 4 | Buch ohne Titel hinzufügen | Fehlermeldung |
-| 5 | Ungültiges Erscheinungsjahr | Eingabe wird abgelehnt |
-| 6 | Buch bearbeiten | Änderung wird gespeichert |
-| 7 | Doppelte E-Mail-Adresse | Fehlermeldung |
-| 8 | Buch ausleihen | Ausleihe wird gespeichert |
-| 9 | Bereits verliehenes Buch ausleihen | Ausleihe wird verhindert |
-| 10 | Viertes Buch ausleihen | Ausleihe wird verhindert |
-| 11 | Mitglied deaktivieren | Mitglied wird nicht mehr zur Ausleihe angeboten |
-| 12 | Mitglied mit offener Ausleihe deaktivieren | Vorgang wird abgelehnt |
-| 13 | Buch zurückgeben | Buch wird wieder verfügbar |
-| 14 | Buch mit Ausleihen löschen | Löschen wird verhindert |
-| 15 | Programm neu starten | Gespeicherte Daten bleiben erhalten |
-
----
 
 ## 🚀 Mögliche Erweiterungen
 
@@ -259,13 +224,6 @@ Dabei werden praktische Kenntnisse in folgenden Bereichen angewendet:
 - Datenbankverbindungen und Transaktionen
 - Fehlerbehandlung und Datenvalidierung
 
----
-
-## 👨‍💻 Autor
-
-**Anas Almadani**
-
-GitHub: [@Anasalmadani](https://github.com/Anasalmadani)
 
 **Projekt:** Bibliotheksverwaltung  
 **Entwicklungsumgebung:** Lazarus / Free Pascal  
