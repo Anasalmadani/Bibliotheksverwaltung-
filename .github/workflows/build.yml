@@ -10,18 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Code holen
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Lazarus installieren
-        run: Linux
+        run: |
           sudo apt-get update
-          sudo apt-get install -y lazarus
+          sudo apt-get install -y fpc lazarus
+
+      - name: lazbuild suchen
+        run: |
+          which lazbuild || true
+          find /usr -name "lazbuild*" -type f 2>/dev/null || true
+          ls
 
       - name: Projekt bauen
-        run: lazbuild Bibliotheksverwaltung.lpi
+        run: |
+          LB=$(command -v lazbuild || find /usr -name lazbuild -type f | head -n1)
+          echo "Benutze: $LB"
+          "$LB" Bibliotheksverwaltung.lpi
 
       - name: Programm speichern
         uses: actions/upload-artifact@v4
         with:
-          name: Bibliotheksverwaltung
+          name: bibliotheksverwaltung
           path: Bibliotheksverwaltung
