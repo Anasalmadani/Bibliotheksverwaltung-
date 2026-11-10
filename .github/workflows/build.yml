@@ -1,0 +1,27 @@
+name: Lazarus Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code holen
+        uses: actions/checkout@v4
+
+      - name: Lazarus installieren
+        run: Linux
+          sudo apt-get update
+          sudo apt-get install -y lazarus
+
+      - name: Projekt bauen
+        run: lazbuild Bibliotheksverwaltung.lpi
+
+      - name: Programm speichern
+        uses: actions/upload-artifact@v4
+        with:
+          name: Bibliotheksverwaltung
+          path: Bibliotheksverwaltung
